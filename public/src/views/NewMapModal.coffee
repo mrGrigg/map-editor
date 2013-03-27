@@ -11,10 +11,10 @@ define ['text!templates/newMapModal.html'], (template) ->
             modalTemplate = Handlebars.compile template
             this.$el.html modalTemplate
 
-            return this
+            this
 
         closeDialog: =>
-            Backbone.Events.trigger 'modalHide'
+            Backbone.Events.trigger 'modal:hide'
             
         makeNewMap: =>
             #Create the new map with the form values
@@ -27,7 +27,7 @@ define ['text!templates/newMapModal.html'], (template) ->
             mapStorageObject = JSON.stringify newMap
             localStorage.setItem newMap.id, mapStorageObject
 
-            Backbone.Events.trigger 'modalHide'
+            Backbone.Events.trigger 'modal:hide'
             Backbone.history.navigate "/edit/#{newMap.id}", true
 
 
@@ -40,4 +40,4 @@ define ['text!templates/newMapModal.html'], (template) ->
                  .toString(16)
                  .substring(1);
 
-            return random
+            random

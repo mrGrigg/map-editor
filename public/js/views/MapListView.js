@@ -55,7 +55,7 @@
       };
 
       MapListView.prototype.showNewMapDialog = function() {
-        Backbone.Events.trigger('modalShow', NewMapModal);
+        Backbone.Events.trigger('modal:show', NewMapModal);
         return this;
       };
 

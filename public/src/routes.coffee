@@ -9,12 +9,12 @@ define (require) ->
             'delete/:id': 'delete'
 
         index: =>
-            Backbone.Events.trigger 'renderChildView', MapList
+            Backbone.Events.trigger 'render:childView', MapList
             #console.log 'index'
 
         edit: (id) =>
             map = @getMapItem id
-            Backbone.Events.trigger 'renderChildView', MapEditor, map
+            Backbone.Events.trigger 'render:childView', MapEditor, map
 
         delete: (id) =>
             localStorage.removeItem(id)

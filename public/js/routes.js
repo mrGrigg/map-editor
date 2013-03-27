@@ -27,14 +27,14 @@
       };
 
       Routes.prototype.index = function() {
-        return Backbone.Events.trigger('renderChildView', MapList);
+        return Backbone.Events.trigger('render:childView', MapList);
       };
 
       Routes.prototype.edit = function(id) {
         var map;
 
         map = this.getMapItem(id);
-        return Backbone.Events.trigger('renderChildView', MapEditor, map);
+        return Backbone.Events.trigger('render:childView', MapEditor, map);
       };
 
       Routes.prototype["delete"] = function(id) {

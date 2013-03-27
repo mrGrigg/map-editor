@@ -11,6 +11,7 @@
       __extends(TileView, _super);
 
       function TileView() {
+        this.selectTile = __bind(this.selectTile, this);
         this.dragStart = __bind(this.dragStart, this);
         this.createTileImage = __bind(this.createTileImage, this);
         this.render = __bind(this.render, this);
@@ -21,7 +22,8 @@
       TileView.prototype.className = 'paletteTile';
 
       TileView.prototype.events = {
-        'dragstart': 'dragStart'
+        'dragstart': 'dragStart',
+        'click': 'selectTile'
       };
 
       TileView.prototype.initialize = function() {
@@ -64,6 +66,10 @@
         } else {
           return event.preventDefault();
         }
+      };
+
+      TileView.prototype.selectTile = function() {
+        return Backbone.Events.trigger('tile:selected', this.model);
       };
 
       return TileView;

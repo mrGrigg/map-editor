@@ -4,13 +4,14 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  define(['text!templates/mapEditor.html', 'views/PalettView'], function(template, PalettView) {
+  define(['text!templates/mapEditor.html', 'views/PaletteView'], function(template, PaletteView) {
     var MapEditor, _ref;
 
     return MapEditor = (function(_super) {
       __extends(MapEditor, _super);
 
       function MapEditor() {
+        this.tileSelected = __bind(this.tileSelected, this);
         this.saveChanges = __bind(this.saveChanges, this);
         this.cancelChanges = __bind(this.cancelChanges, this);
         this.render = __bind(this.render, this);
@@ -24,16 +25,17 @@
       };
 
       MapEditor.prototype.initialize = function() {
-        return this;
+        return Backbone.Events.on('tile:selected', this.tileSelected, this);
       };
 
       MapEditor.prototype.render = function() {
-        var editorTemplate, palettView;
+        var editorTemplate, paletteView;
 
         editorTemplate = Handlebars.compile(template);
         this.$el.html(editorTemplate(this.model));
-        palettView = new PalettView;
-        this.$el.append(palettView.render().el);
+        paletteView = new PaletteView;
+        this.$el.append(paletteView.render().el);
+        this.$el.append($('<div class="map-canvas-wrapper"></div>'));
         return this;
       };
 
@@ -43,6 +45,10 @@
 
       MapEditor.prototype.saveChanges = function() {
         return console.log('saving');
+      };
+
+      MapEditor.prototype.tileSelected = function(tile) {
+        return console.log(tile);
       };
 
       return MapEditor;

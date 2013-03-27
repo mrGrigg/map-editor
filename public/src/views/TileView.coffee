@@ -3,6 +3,7 @@ define ->
         className: 'paletteTile'
         events:
             'dragstart': 'dragStart'
+            'click': 'selectTile'
 
         initialize: =>
             jQuery.event.props.push 'dataTransfer'
@@ -38,3 +39,6 @@ define ->
                 return
             else
                 event.preventDefault()
+
+        selectTile: =>
+            Backbone.Events.trigger 'tile:selected', @model

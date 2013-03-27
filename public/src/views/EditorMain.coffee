@@ -2,12 +2,12 @@ define ->
     class EditorMain extends Backbone.View
         el: 'body'
         initialize: =>
-            Backbone.Events.on 'modalShow', @showModal, this
-            Backbone.Events.on 'modalHide', @hideModal, this
-            Backbone.Events.on 'renderChildView', @renderChild, this
+            Backbone.Events.on 'modal:show', @showModal, this
+            Backbone.Events.on 'modal:hide', @hideModal, this
+            Backbone.Events.on 'render:childView', @renderChild, this
 
         render: =>
-            this
+            @
 
         renderChild: (View, model) =>
             if @childView?
@@ -16,6 +16,8 @@ define ->
             if View?
                 @childView = new View {model: model}
                 this.$el.append @childView.render().el
+
+            @
 
         showModal: (Modal) =>
             if Modal?

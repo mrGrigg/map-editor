@@ -27,7 +27,7 @@ define [
             return storageItems
 
         showNewMapDialog: =>
-            Backbone.Events.trigger 'modalShow', NewMapModal
+            Backbone.Events.trigger 'modal:show', NewMapModal
 
             return this
 

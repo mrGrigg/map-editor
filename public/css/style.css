@@ -1,6 +1,9 @@
 html, body {
     height:100%;
     width:100%;
+    margin:0;
+    padding:0;
+    position:absolute;
 }
 
 header {
@@ -33,9 +36,90 @@ button {
 .map-width,
 .map-height {
     width:45px;
-
 }
 
+.palette {
+    display:inline-block;
+    max-width:530px;
+    border:solid 1px #888;
+    margin:10px;
+    padding:0;
+    background: white;
+    position:absolute;
+    z-index:1;
+}
+
+.toggle-palette {
+    position:absolute;
+    top: -1px;
+    right: -35px;
+    width: 35px;
+    overflow:hidden;
+}
+
+.toggle-palette .arrow {
+    color:#888;
+    font-size: 1.75em;
+    line-height: .7em;
+    font-weight:bold;
+    border-radius: 15px;
+    border:solid 1px #888;
+    text-indent: 38%;
+    cursor:pointer;
+    position:relative;
+    left: -15px;
+    height: 20px;
+    background: #fff;
+}
+
+.toggle-palette .open:hover,
+.toggle-palette .closed:hover {
+    background-color: #888;
+    color:#fff;
+}
+
+.toggle-palette .open:before {
+    content:'\25C2';
+}
+
+.toggle-palette .closed:before {
+    content:'\25B8';
+}
+
+.paletteTile {
+    margin:3px;
+    height:32px;
+    width:32px;
+    padding:3px;
+    display:inline-block;
+}
+
+.selected {
+    padding:2px;
+    border:solid 1px black;
+    background-color:#888;
+}
+
+.map-canvas-wrapper {
+    position:relative;
+    width:700px;
+    height:500px;
+    background-color:#888;
+    opacity:.3;
+    margin:70px auto;
+}
+
+.mapNode {
+    width:32px;
+    height:32px;
+    float:left;
+}
+
+.mapNode.empty { 
+    width:30px;
+    height:30px;   
+    border:dotted 1px #ccc;
+}
 /****************/
 /* Utilities */
 /****************/

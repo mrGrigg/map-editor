@@ -22,9 +22,9 @@
       EditorMain.prototype.el = 'body';
 
       EditorMain.prototype.initialize = function() {
-        Backbone.Events.on('modalShow', this.showModal, this);
-        Backbone.Events.on('modalHide', this.hideModal, this);
-        return Backbone.Events.on('renderChildView', this.renderChild, this);
+        Backbone.Events.on('modal:show', this.showModal, this);
+        Backbone.Events.on('modal:hide', this.hideModal, this);
+        return Backbone.Events.on('render:childView', this.renderChild, this);
       };
 
       EditorMain.prototype.render = function() {
@@ -39,8 +39,9 @@
           this.childView = new View({
             model: model
           });
-          return this.$el.append(this.childView.render().el);
+          this.$el.append(this.childView.render().el);
         }
+        return this;
       };
 
       EditorMain.prototype.showModal = function(Modal) {

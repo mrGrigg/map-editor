@@ -38,7 +38,7 @@
       };
 
       NewMapModal.prototype.closeDialog = function() {
-        return Backbone.Events.trigger('modalHide');
+        return Backbone.Events.trigger('modal:hide');
       };
 
       NewMapModal.prototype.makeNewMap = function() {
@@ -52,7 +52,7 @@
         };
         mapStorageObject = JSON.stringify(newMap);
         localStorage.setItem(newMap.id, mapStorageObject);
-        Backbone.Events.trigger('modalHide');
+        Backbone.Events.trigger('modal:hide');
         return Backbone.history.navigate("/edit/" + newMap.id, true);
       };
 
