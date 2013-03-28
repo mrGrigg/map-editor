@@ -1,17 +1,3 @@
-# `require.config({
-#     paths: {
-#         'jquery': 'lib/jquery-1.9.1.min'
-#         , 'underscore': 'lib/underscore-min'
-#         , 'backbone': 'lib/backbone-min'
-#         , 'handlebars': 'lib/handlebars'
-#     }
-#     , shim: {
-#         'backbone':{
-#             deps:['underscore', 'jquery']
-#             , exports: 'Backbone'
-#         }
-#     }
-# });`
 require.config
     paths:
         'jquery': 'lib/jquery-1.9.1.min'

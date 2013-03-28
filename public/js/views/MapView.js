@@ -24,7 +24,9 @@
 
       MapView.prototype.initialize = function() {
         Backbone.Events.on('node:create', this.addNode, this);
-        return this.nodeCollection = new NodeCollection();
+        this.nodeCollection = new NodeCollection();
+        this.nodeCollection.url("_" + this.model.id + "-collection");
+        return this.nodeCollection.fetch();
       };
 
       MapView.prototype.render = function() {
@@ -53,12 +55,15 @@
 
           nodeArray[y] = new Array(width);
           _fn1 = function(x) {
+            var node;
+
+            node = new Node({
+              x: x,
+              y: y,
+              mapId: mapId
+            });
             nodeArray[y][x] = new NodeView({
-              model: new Node({
-                x: x,
-                y: y,
-                mapId: mapId
-              })
+              model: node
             });
           };
           for (x = _j = 0, _ref2 = width - 1; 0 <= _ref2 ? _j <= _ref2 : _j >= _ref2; x = 0 <= _ref2 ? ++_j : --_j) {
@@ -97,6 +102,7 @@
 
       MapView.prototype.addNode = function(node) {
         this.nodeCollection.add(node);
+        console.log(this.nodeCollection.toJSON());
         return this;
       };
 

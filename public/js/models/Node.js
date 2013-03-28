@@ -35,7 +35,7 @@
       };
 
       Node.prototype.initialize = function() {
-        return this.set('id', "_" + (this.get('mapId')) + "-" + (this.get('x')) + "-" + (this.get('y')));
+        return this.set('id', "" + (this.get('x')) + "-" + (this.get('y')));
       };
 
       return Node;

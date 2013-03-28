@@ -17,4 +17,4 @@ define ->
             autoAction: null
 
         initialize: =>
-            @.set 'id', "_#{@get('mapId')}-#{@get('x')}-#{@get('y')}"
+            @.set 'id', "#{@get('x')}-#{@get('y')}"

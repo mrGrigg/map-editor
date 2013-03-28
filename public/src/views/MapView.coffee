@@ -4,7 +4,10 @@ define ['views/NodeView', 'models/NodeCollection', 'models/Node'], (NodeView, No
         initialize: =>
             Backbone.Events.on 'node:create', @addNode, @
             @nodeCollection = new NodeCollection()
+            @nodeCollection.url("_#{@model.id}-collection")
             
+            @nodeCollection.fetch()
+
         render: =>
             @setMapDimensions()
 
@@ -24,7 +27,8 @@ define ['views/NodeView', 'models/NodeCollection', 'models/Node'], (NodeView, No
 
                     for x in [0..width-1]
                         do (x) ->
-                            nodeArray[y][x] = new NodeView model: new Node x: x, y: y, mapId: mapId
+                            node = new Node x: x, y: y, mapId: mapId
+                            nodeArray[y][x] = new NodeView model: node
 
                             return
 
@@ -46,4 +50,5 @@ define ['views/NodeView', 'models/NodeCollection', 'models/Node'], (NodeView, No
 
         addNode: (node) =>
             @nodeCollection.add node
+            console.log @nodeCollection.toJSON()
             @

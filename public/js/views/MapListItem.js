@@ -11,6 +11,7 @@
       __extends(MapListItem, _super);
 
       function MapListItem() {
+        this.navigate = __bind(this.navigate, this);
         this.deleteMap = __bind(this.deleteMap, this);
         this.render = __bind(this.render, this);
         this.initialize = __bind(this.initialize, this);        _ref = MapListItem.__super__.constructor.apply(this, arguments);
@@ -18,6 +19,7 @@
       }
 
       MapListItem.prototype.events = {
+        'click .edit': 'navigate',
         'click .delete': 'deleteMap'
       };
 
@@ -33,7 +35,16 @@
 
       MapListItem.prototype.deleteMap = function() {
         this.model.destroy();
-        return this.remove();
+        this.remove();
+        return false;
+      };
+
+      MapListItem.prototype.navigate = function() {
+        var href;
+
+        href = this.$('.edit').attr('href');
+        Backbone.history.navigate(href, true);
+        return false;
       };
 
       return MapListItem;

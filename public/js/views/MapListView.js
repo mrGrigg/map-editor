@@ -63,10 +63,11 @@
       };
 
       MapListView.prototype.addMapToCollection = function(map) {
-        var test;
+        var mapModel;
 
-        test = this.collection.add(map);
-        return console.log(test);
+        this.collection.add(map);
+        mapModel = this.collection.last();
+        return mapModel.save();
       };
 
       return MapListView;

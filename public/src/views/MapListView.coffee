@@ -35,10 +35,11 @@ define [
 
         showNewMapDialog: =>
             Backbone.Events.trigger 'modal:show', NewMapModal
-
             @
 
         addMapToCollection: (map) =>
-            test = @collection.add map
-            console.log(test)
+            @collection.add map
+            
+            mapModel = @collection.last()
+            mapModel.save()
 
