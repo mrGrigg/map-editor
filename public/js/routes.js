@@ -14,7 +14,6 @@
 
       function Routes() {
         this.getMapItem = __bind(this.getMapItem, this);
-        this["delete"] = __bind(this["delete"], this);
         this.edit = __bind(this.edit, this);
         this.index = __bind(this.index, this);        _ref = Routes.__super__.constructor.apply(this, arguments);
         return _ref;
@@ -35,11 +34,6 @@
 
         map = this.getMapItem(id);
         return Backbone.Events.trigger('render:childView', MapEditor, map);
-      };
-
-      Routes.prototype["delete"] = function(id) {
-        localStorage.removeItem(id);
-        return Backbone.history.navigate('', true);
       };
 
       Routes.prototype.getMapItem = function(id) {

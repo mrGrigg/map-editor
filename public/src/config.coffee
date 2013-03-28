@@ -19,6 +19,7 @@ require.config
         'backbone': 'lib/backbone-min'
         'handlebars': 'lib/handlebars'
         'text': 'lib/text'
+        'templates': '../templates'
     shim:
         'backbone':
             deps: [

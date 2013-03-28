@@ -1,30 +1,30 @@
-define ['views/NodeView', 'models/NodeCollection'], (NodeView, NodeCollection) ->
+define ['views/NodeView', 'models/NodeCollection', 'models/Node'], (NodeView, NodeCollection, Node) ->
     class MapView extends Backbone.View
         className: 'map-canvas'
         initialize: =>
             Backbone.Events.on 'node:create', @addNode, @
-            @width = parseInt @.options.width, 10
-            @height = parseInt @.options.height, 10
-
+            @nodeCollection = new NodeCollection()
+            
         render: =>
             @setMapDimensions()
 
             @
 
         setMapDimensions: =>
-            @.$el.css 'width': @width * 32, 'height': @height * 32
-            nodeArray = @generateNodeArray @width, @height
+            @$el.css 'width': @model.width * 32, 'height': @model.height * 32
+            nodeArray = @generateNodeArray @model.width, @model.height
             @drawNodes nodeArray
 
         generateNodeArray: (width, height) =>
             nodeArray = new Array height
+            mapId = @model.id
             for y in [0..height-1]
                 do (y) ->
                     nodeArray[y] = new Array width
 
                     for x in [0..width-1]
                         do (x) ->
-                            nodeArray[y][x] = new NodeView x: x, y: y
+                            nodeArray[y][x] = new NodeView model: new Node x: x, y: y, mapId: mapId
 
                             return
 
@@ -40,21 +40,10 @@ define ['views/NodeView', 'models/NodeCollection'], (NodeView, NodeCollection) -
                         do (node) ->
                             map.appendChild node.render().el
                                 
-            @.$el.append(map)                          
+            @$el.append(map)                          
                     
             @
 
-        testFunction: (test) =>
-            console.log test
-            @
-
         addNode: (node) =>
+            @nodeCollection.add node
             @
-
-        # makeColumnArray: (width) =>
-
-        #     @
-        
-        # makeRowArray: (height) =>
-
-        #     @

@@ -11,7 +11,6 @@
       __extends(MapEditor, _super);
 
       function MapEditor() {
-        this.tileSelected = __bind(this.tileSelected, this);
         this.saveChanges = __bind(this.saveChanges, this);
         this.cancelChanges = __bind(this.cancelChanges, this);
         this.render = __bind(this.render, this);
@@ -24,9 +23,7 @@
         'click .save-changes': 'saveChanges'
       };
 
-      MapEditor.prototype.initialize = function() {
-        return Backbone.Events.on('tile:selected', this.tileSelected, this);
-      };
+      MapEditor.prototype.initialize = function() {};
 
       MapEditor.prototype.render = function() {
         var editorTemplate, mapView, paletteView;
@@ -35,7 +32,9 @@
         this.$el.html(editorTemplate(this.model));
         paletteView = new PaletteView;
         this.$el.append(paletteView.render().el);
-        mapView = new MapView(this.model);
+        mapView = new MapView({
+          model: this.model
+        });
         this.$el.append($('<div class="map-canvas-wrapper"></div>'));
         this.$('.map-canvas-wrapper').append(mapView.render().el);
         return this;
@@ -47,10 +46,6 @@
 
       MapEditor.prototype.saveChanges = function() {
         return console.log('saving');
-      };
-
-      MapEditor.prototype.tileSelected = function(tile) {
-        return console.log(tile);
       };
 
       return MapEditor;

@@ -56,7 +56,7 @@
         return image;
       };
 
-      TileView.prototype.dragStart = function(evet) {
+      TileView.prototype.dragStart = function(event) {
         var data;
 
         if (event.target instanceof HTMLImageElement) {

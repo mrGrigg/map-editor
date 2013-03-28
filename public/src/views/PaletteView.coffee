@@ -7,35 +7,31 @@ define ['modules/Tiles', 'views/TileView', 'text!templates/palette.html'], (Tile
             'click .toggle-palette': 'togglePallete'
 
         initialize: =>
-            this
+            @
 
         render: =>
             tiles = document.createElement 'div'
             
-            toggle = Handlebars.compile(template)
+            toggle = Handlebars.compile template
 
             for name, data of Tiles
                 tileView = new TileView data: data, name: name
                 tiles.appendChild tileView.render().el
 
-            @.$el.html tiles.children
-            @.$el.append toggle
-
-            @.$('.paletteTile:first').addClass('selected')
+            @$el.html tiles.children
+            @$el.append toggle
 
             @
 
         selectTile: (event) =>
-            @.$('.selected').removeClass 'selected'
+            @$('.selected').removeClass 'selected'
 
             tile = event.currentTarget
             tile.classList.add 'selected'
 
-            @togglePallete()
-
         togglePallete: =>
-            toggle = @.$('.arrow')
+            toggle = @$('.arrow')
 
-            @.$('.paletteTile:not(.selected)').toggle()
+            @$('.paletteTile:not(.selected)').toggle()
 
             toggle.toggleClass 'open closed'

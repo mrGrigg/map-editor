@@ -2,9 +2,9 @@ define ->
     class EditorMain extends Backbone.View
         el: 'body'
         initialize: =>
-            Backbone.Events.on 'modal:show', @showModal, this
-            Backbone.Events.on 'modal:hide', @hideModal, this
-            Backbone.Events.on 'render:childView', @renderChild, this
+            Backbone.Events.on 'modal:show', @showModal, @
+            Backbone.Events.on 'modal:hide', @hideModal, @
+            Backbone.Events.on 'render:childView', @renderChild, @
 
         render: =>
             @
@@ -15,17 +15,17 @@ define ->
 
             if View?
                 @childView = new View {model: model}
-                this.$el.append @childView.render().el
+                @$el.append @childView.render().el
 
             @
 
         showModal: (Modal) =>
             if Modal?
-                this.$el.append('<div class="overlay"></div>')
+                @$el.append('<div class="overlay"></div>')
                 @modalView = new Modal
-                this.$el.append @modalView.render().el
+                @$el.append @modalView.render().el
 
         hideModal: =>
-            this.$('.overlay').remove();
+            @$('.overlay').remove();
             if @modalView?
                 @modalView.remove();

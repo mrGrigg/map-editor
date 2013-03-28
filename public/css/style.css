@@ -40,12 +40,12 @@ button {
 
 .palette {
     display:inline-block;
-    max-width:530px;
+    max-width:750px;
     border:solid 1px #888;
     margin:10px;
     padding:0;
     background: white;
-    position:absolute;
+    position:relative;
     z-index:1;
 }
 
@@ -101,21 +101,30 @@ button {
 }
 
 .map-canvas-wrapper {
-    position:relative;
     width:700px;
     height:500px;
-    background-color:#888;
-    opacity:.3;
-    margin:70px auto;
+    padding:10px;
+    margin:25px auto;
+    position:relative;
 }
 
-.mapNode {
+.map-canvas {
+    border:solid 1px #888;
+}
+
+.map-node {
     width:32px;
     height:32px;
     float:left;
+    position:relative;
+    cursor:pointer;
 }
 
-.mapNode.empty { 
+.map-node:hover {
+    background:#eee;
+}
+
+.map-node.empty { 
     width:30px;
     height:30px;   
     border:dotted 1px #ccc;

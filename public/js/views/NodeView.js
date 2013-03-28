@@ -4,13 +4,15 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  define(['models/Node'], function(Node) {
+  define(function() {
     var NodeView, _ref;
 
     return NodeView = (function(_super) {
       __extends(NodeView, _super);
 
       function NodeView() {
+        this.placeTile = __bind(this.placeTile, this);
+        this.tileSelected = __bind(this.tileSelected, this);
         this.createTileImage = __bind(this.createTileImage, this);
         this.handleDrop = __bind(this.handleDrop, this);
         this.dragOver = __bind(this.dragOver, this);
@@ -22,20 +24,21 @@
 
       NodeView.prototype.className = 'map-node empty';
 
+      NodeView.prototype.events = {
+        'click': 'placeTile'
+      };
+
       NodeView.prototype.initialize = function() {
-        this.model = new Node({
-          x: this.options.x,
-          y: this.options.y
-        });
+        Backbone.Events.on('tile:selected', this.tileSelected, this);
         return this.dnd = 'application/json';
       };
 
       NodeView.prototype.render = function() {
         var coordinateClass;
 
-        coordinateClass = "coords[" + this.model.x + "," + this.model.y + "]";
+        coordinateClass = "coords[" + (this.model.get('x')) + "," + (this.model.get('y')) + "]";
         this.$el.addClass(coordinateClass);
-        this.$el.attr('title', "" + this.model.x + ", " + this.model.y);
+        this.$el.attr('title', "" + (this.model.get('x')) + ", " + (this.model.get('y')));
         this.$el.attr('dropzone', 'copy application/json');
         return this;
       };
@@ -53,14 +56,11 @@
       };
 
       NodeView.prototype.handleDrop = function(event) {
-        var data, image;
+        var data;
 
         data = event.dataTransfer.getData(this.dnd);
         this.model.set(JSON.parse(data));
-        image = this.createTileImage();
-        this.$el.html(image);
-        this.$el.removeClass('empty');
-        return Backbone.Events.trigger('node:create', this.model);
+        return this.placeTile();
       };
 
       NodeView.prototype.createTileImage = function() {
@@ -72,6 +72,20 @@
         image.src = this.model.get('data');
         image.title = this.model.get('name');
         return image;
+      };
+
+      NodeView.prototype.tileSelected = function(tile) {
+        return this.selectedTile = tile;
+      };
+
+      NodeView.prototype.placeTile = function() {
+        var image;
+
+        this.model.set(this.selectedTile);
+        image = this.createTileImage();
+        this.$el.html(image);
+        this.$el.removeClass('empty');
+        return Backbone.Events.trigger('node:create', this.model);
       };
 
       return NodeView;

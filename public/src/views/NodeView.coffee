@@ -1,17 +1,19 @@
-define ['models/Node'], (Node) ->
+define ->
     class NodeView extends Backbone.View
         className: 'map-node empty'
-        #events:
+        events:
+            'click': 'placeTile'
 
         initialize: =>
-            @model = new Node x: @options.x, y: @options.y
+            Backbone.Events.on 'tile:selected', @tileSelected, @
+
             @dnd = 'application/json'
 
         render: =>
-            coordinateClass = "coords[#{@model.x},#{@model.y}]"
-            @.$el.addClass coordinateClass
-            @.$el.attr 'title', "#{@model.x}, #{@model.y}"
-            @.$el.attr 'dropzone', 'copy application/json'
+            coordinateClass = "coords[#{@model.get('x')},#{@model.get('y')}]"
+            @$el.addClass coordinateClass
+            @$el.attr 'title', "#{@model.get('x')}, #{@model.get('y')}"
+            @$el.attr 'dropzone', 'copy application/json'
 
             @
 
@@ -32,11 +34,7 @@ define ['models/Node'], (Node) ->
 
             @model.set JSON.parse data
 
-            image = @createTileImage()
-            @.$el.html image
-            @.$el.removeClass 'empty'
-
-            Backbone.Events.trigger 'node:create', @model
+            @placeTile()
 
         createTileImage: =>
             image = document.createElement 'img'
@@ -46,3 +44,15 @@ define ['models/Node'], (Node) ->
             image.title = @model.get 'name'
 
             image
+
+        tileSelected: (tile) =>
+            @selectedTile = tile
+
+        placeTile: =>
+            @model.set @selectedTile
+
+            image = @createTileImage()
+            @$el.html image
+            @$el.removeClass 'empty'
+
+            Backbone.Events.trigger 'node:create', @model

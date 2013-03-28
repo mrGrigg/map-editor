@@ -1,38 +1,44 @@
 define [
-    'text!templates/mapList.html'
+    'models/MapCollection'
+    'views/MapListItem'
     'views/NewMapModal'
-    ], (template, NewMapModal) ->
+    'text!templates/mapList.html'
+    ], (MapCollection, MapListItem, NewMapModal, template) ->
 
     class MapListView extends Backbone.View
         events:
             'click .create-new': 'showNewMapDialog'
-            'click a': 'navigate'
 
         initialize: =>
-            @getMapItems()
+            @collection = new MapCollection
+
+            @listenTo @collection, 'reset', @renderList
+            @listenTo @collection, 'add', @renderMapListItem
+
+            Backbone.Events.on 'map:create', @addMapToCollection
 
         render: =>
-            mapTemplate = Handlebars.compile template
-            storageItems = @getMapItems()
+            listTemplate = Handlebars.compile template
+            @$el.html listTemplate
+            @collection.fetch()
+            @
 
-            this.$el.html(mapTemplate(storageItems));
-                        
-            return this
+        renderList: =>
+            list = document.createElement 'ul'
+            @collection.each @renderMapListItem
 
-        getMapItems: =>
-            storage = localStorage
-            storageItems = for name, map of storage
-                JSON.parse(map)
-            
-            return storageItems
+        renderMapListItem: (map) =>
+            mapListItem = new MapListItem model: map
+            @$('.map-list').append mapListItem.render().el
+
+            @
 
         showNewMapDialog: =>
             Backbone.Events.trigger 'modal:show', NewMapModal
 
-            return this
+            @
 
-        navigate: (event) =>
-            location = $(event.target).attr 'href'
-            Backbone.history.navigate location, true
+        addMapToCollection: (map) =>
+            test = @collection.add map
+            console.log(test)
 
-            return false

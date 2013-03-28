@@ -1,6 +1,6 @@
 define ->
     class Node extends Backbone.Model
-        defauts:
+        defaults:
             x: 0
             y: 0
             name: 'grass'
@@ -14,4 +14,7 @@ define ->
                 level: [2,5]
                 monster: 'range'
                 percentage: .25
-            autoAction: null            
+            autoAction: null
+
+        initialize: =>
+            @.set 'id', "_#{@get('mapId')}-#{@get('x')}-#{@get('y')}"

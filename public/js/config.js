@@ -6,7 +6,8 @@
       'underscore': 'lib/underscore-min',
       'backbone': 'lib/backbone-min',
       'handlebars': 'lib/handlebars',
-      'text': 'lib/text'
+      'text': 'lib/text',
+      'templates': '../templates'
     },
     shim: {
       'backbone': {

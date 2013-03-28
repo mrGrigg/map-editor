@@ -4,54 +4,57 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  define(['text!templates/mapList.html', 'views/NewMapModal'], function(template, NewMapModal) {
+  define(['models/MapCollection', 'views/MapListItem', 'views/NewMapModal', 'text!templates/mapList.html'], function(MapCollection, MapListItem, NewMapModal, template) {
     var MapListView, _ref;
 
     return MapListView = (function(_super) {
       __extends(MapListView, _super);
 
       function MapListView() {
-        this.navigate = __bind(this.navigate, this);
+        this.addMapToCollection = __bind(this.addMapToCollection, this);
         this.showNewMapDialog = __bind(this.showNewMapDialog, this);
-        this.getMapItems = __bind(this.getMapItems, this);
+        this.renderMapListItem = __bind(this.renderMapListItem, this);
+        this.renderList = __bind(this.renderList, this);
         this.render = __bind(this.render, this);
         this.initialize = __bind(this.initialize, this);        _ref = MapListView.__super__.constructor.apply(this, arguments);
         return _ref;
       }
 
       MapListView.prototype.events = {
-        'click .create-new': 'showNewMapDialog',
-        'click a': 'navigate'
+        'click .create-new': 'showNewMapDialog'
       };
 
       MapListView.prototype.initialize = function() {
-        return this.getMapItems();
+        this.collection = new MapCollection;
+        this.listenTo(this.collection, 'reset', this.renderList);
+        this.listenTo(this.collection, 'add', this.renderMapListItem);
+        return Backbone.Events.on('map:create', this.addMapToCollection);
       };
 
       MapListView.prototype.render = function() {
-        var mapTemplate, storageItems;
+        var listTemplate;
 
-        mapTemplate = Handlebars.compile(template);
-        storageItems = this.getMapItems();
-        this.$el.html(mapTemplate(storageItems));
+        listTemplate = Handlebars.compile(template);
+        this.$el.html(listTemplate);
+        this.collection.fetch();
         return this;
       };
 
-      MapListView.prototype.getMapItems = function() {
-        var map, name, storage, storageItems;
+      MapListView.prototype.renderList = function() {
+        var list;
 
-        storage = localStorage;
-        storageItems = (function() {
-          var _results;
+        list = document.createElement('ul');
+        return this.collection.each(this.renderMapListItem);
+      };
 
-          _results = [];
-          for (name in storage) {
-            map = storage[name];
-            _results.push(JSON.parse(map));
-          }
-          return _results;
-        })();
-        return storageItems;
+      MapListView.prototype.renderMapListItem = function(map) {
+        var mapListItem;
+
+        mapListItem = new MapListItem({
+          model: map
+        });
+        this.$('.map-list').append(mapListItem.render().el);
+        return this;
       };
 
       MapListView.prototype.showNewMapDialog = function() {
@@ -59,12 +62,11 @@
         return this;
       };
 
-      MapListView.prototype.navigate = function(event) {
-        var location;
+      MapListView.prototype.addMapToCollection = function(map) {
+        var test;
 
-        location = $(event.target).attr('href');
-        Backbone.history.navigate(location, true);
-        return false;
+        test = this.collection.add(map);
+        return console.log(test);
       };
 
       return MapListView;

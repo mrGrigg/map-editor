@@ -4,7 +4,7 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  define(['views/NodeView', 'models/NodeCollection'], function(NodeView, NodeCollection) {
+  define(['views/NodeView', 'models/NodeCollection', 'models/Node'], function(NodeView, NodeCollection, Node) {
     var MapView, _ref;
 
     return MapView = (function(_super) {
@@ -12,7 +12,6 @@
 
       function MapView() {
         this.addNode = __bind(this.addNode, this);
-        this.testFunction = __bind(this.testFunction, this);
         this.drawNodes = __bind(this.drawNodes, this);
         this.generateNodeArray = __bind(this.generateNodeArray, this);
         this.setMapDimensions = __bind(this.setMapDimensions, this);
@@ -25,8 +24,7 @@
 
       MapView.prototype.initialize = function() {
         Backbone.Events.on('node:create', this.addNode, this);
-        this.width = parseInt(this.options.width, 10);
-        return this.height = parseInt(this.options.height, 10);
+        return this.nodeCollection = new NodeCollection();
       };
 
       MapView.prototype.render = function() {
@@ -38,25 +36,29 @@
         var nodeArray;
 
         this.$el.css({
-          'width': this.width * 32,
-          'height': this.height * 32
+          'width': this.model.width * 32,
+          'height': this.model.height * 32
         });
-        nodeArray = this.generateNodeArray(this.width, this.height);
+        nodeArray = this.generateNodeArray(this.model.width, this.model.height);
         return this.drawNodes(nodeArray);
       };
 
       MapView.prototype.generateNodeArray = function(width, height) {
-        var nodeArray, y, _fn, _i, _ref1;
+        var mapId, nodeArray, y, _fn, _i, _ref1;
 
         nodeArray = new Array(height);
+        mapId = this.model.id;
         _fn = function(y) {
           var x, _fn1, _j, _ref2;
 
           nodeArray[y] = new Array(width);
           _fn1 = function(x) {
             nodeArray[y][x] = new NodeView({
-              x: x,
-              y: y
+              model: new Node({
+                x: x,
+                y: y,
+                mapId: mapId
+              })
             });
           };
           for (x = _j = 0, _ref2 = width - 1; 0 <= _ref2 ? _j <= _ref2 : _j >= _ref2; x = 0 <= _ref2 ? ++_j : --_j) {
@@ -93,12 +95,8 @@
         return this;
       };
 
-      MapView.prototype.testFunction = function(test) {
-        console.log(test);
-        return this;
-      };
-
       MapView.prototype.addNode = function(node) {
+        this.nodeCollection.add(node);
         return this;
       };
 

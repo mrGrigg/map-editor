@@ -7,7 +7,7 @@ define ->
 
         initialize: =>
             jQuery.event.props.push 'dataTransfer'
-            this.$el.attr 'id', @options.name
+            @$el.attr 'id', @options.name
 
             @model =
                 name: @options.name
@@ -17,10 +17,10 @@ define ->
 
         render: =>
             image = @createTileImage()
-            this.$el.append image
-            this.$el.attr 'draggable', true
+            @$el.append image
+            @$el.attr 'draggable', true
 
-            this
+            @
 
         createTileImage: =>
             image = document.createElement 'img'
@@ -31,7 +31,7 @@ define ->
 
             image
 
-        dragStart: (evet) =>
+        dragStart: (event) =>
             if event.target instanceof HTMLImageElement
                 data = JSON.stringify @model
                 event.dataTransfer.setData @dnd, data

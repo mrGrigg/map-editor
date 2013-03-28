@@ -44,7 +44,6 @@
         }
         this.$el.html(tiles.children);
         this.$el.append(toggle);
-        this.$('.paletteTile:first').addClass('selected');
         return this;
       };
 
@@ -53,8 +52,7 @@
 
         this.$('.selected').removeClass('selected');
         tile = event.currentTarget;
-        tile.classList.add('selected');
-        return this.togglePallete();
+        return tile.classList.add('selected');
       };
 
       PaletteView.prototype.togglePallete = function() {

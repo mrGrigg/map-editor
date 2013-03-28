@@ -9,18 +9,17 @@ define [
             'click .save-changes': 'saveChanges'
 
         initialize: =>
-            Backbone.Events.on 'tile:selected', @tileSelected, @
 
         render: =>
             editorTemplate = Handlebars.compile template
-            @.$el.html editorTemplate @model
+            @$el.html editorTemplate @model
 
             paletteView = new PaletteView
-            @.$el.append paletteView.render().el
+            @$el.append paletteView.render().el
 
-            mapView = new MapView @model
-            @.$el.append $('<div class="map-canvas-wrapper"></div>')
-            @.$('.map-canvas-wrapper').append mapView.render().el
+            mapView = new MapView model: @model
+            @$el.append $('<div class="map-canvas-wrapper"></div>')
+            @$('.map-canvas-wrapper').append mapView.render().el
 
             @
 
@@ -29,6 +28,3 @@ define [
 
         saveChanges: =>
             console.log 'saving'
-
-        tileSelected: (tile) =>
-            console.log tile

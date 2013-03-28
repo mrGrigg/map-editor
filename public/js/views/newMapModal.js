@@ -4,7 +4,7 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  define(['text!templates/newMapModal.html'], function(template) {
+  define(['text!templates/newMapModal.html', 'models/Map'], function(template, Map) {
     var NewMapModal, _ref;
 
     return NewMapModal = (function(_super) {
@@ -42,18 +42,16 @@
       };
 
       NewMapModal.prototype.makeNewMap = function() {
-        var mapStorageObject, newMap;
+        var map;
 
-        newMap = {
+        map = {
           'name': this.$('.map-name').val(),
           'width': this.$('.map-width').val(),
           'height': this.$('.map-height').val(),
           'id': this.guid()
         };
-        mapStorageObject = JSON.stringify(newMap);
-        localStorage.setItem(newMap.id, mapStorageObject);
-        Backbone.Events.trigger('modal:hide');
-        return Backbone.history.navigate("/edit/" + newMap.id, true);
+        Backbone.Events.trigger('map:create', map);
+        return Backbone.Events.trigger('modal:hide');
       };
 
       NewMapModal.prototype.guid = function() {

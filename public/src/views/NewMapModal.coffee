@@ -1,4 +1,4 @@
-define ['text!templates/newMapModal.html'], (template) ->
+define ['text!templates/newMapModal.html', 'models/Map'], (template, Map) ->
     class NewMapModal extends Backbone.View
         className: 'new-map modal'
         events:
@@ -9,27 +9,23 @@ define ['text!templates/newMapModal.html'], (template) ->
 
         render: =>
             modalTemplate = Handlebars.compile template
-            this.$el.html modalTemplate
+            @$el.html modalTemplate
 
-            this
+            @
 
         closeDialog: =>
             Backbone.Events.trigger 'modal:hide'
             
         makeNewMap: =>
             #Create the new map with the form values
-            newMap =
-                'name': this.$('.map-name').val()
-                'width': this.$('.map-width').val()
-                'height': this.$('.map-height').val()
+            map =
+                'name': @$('.map-name').val()
+                'width': @$('.map-width').val()
+                'height': @$('.map-height').val()
                 'id': @guid()
 
-            mapStorageObject = JSON.stringify newMap
-            localStorage.setItem newMap.id, mapStorageObject
-
+            Backbone.Events.trigger 'map:create', map
             Backbone.Events.trigger 'modal:hide'
-            Backbone.history.navigate "/edit/#{newMap.id}", true
-
 
         #Hacky guid for dev
         guid: => 

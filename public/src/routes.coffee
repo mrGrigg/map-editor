@@ -16,10 +16,6 @@ define (require) ->
             map = @getMapItem id
             Backbone.Events.trigger 'render:childView', MapEditor, map
 
-        delete: (id) =>
-            localStorage.removeItem(id)
-            Backbone.history.navigate '', true
-
         getMapItem: (id) =>
             mapItem = localStorage.getItem id
             JSON.parse mapItem
