@@ -4,7 +4,7 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  define(['text!templates/mapEditor.html', 'views/PaletteView'], function(template, PaletteView) {
+  define(['text!templates/mapEditor.html', 'views/PaletteView', 'views/MapView'], function(template, PaletteView, MapView) {
     var MapEditor, _ref;
 
     return MapEditor = (function(_super) {
@@ -29,13 +29,15 @@
       };
 
       MapEditor.prototype.render = function() {
-        var editorTemplate, paletteView;
+        var editorTemplate, mapView, paletteView;
 
         editorTemplate = Handlebars.compile(template);
         this.$el.html(editorTemplate(this.model));
         paletteView = new PaletteView;
         this.$el.append(paletteView.render().el);
+        mapView = new MapView(this.model);
         this.$el.append($('<div class="map-canvas-wrapper"></div>'));
+        this.$('.map-canvas-wrapper').append(mapView.render().el);
         return this;
       };
 
