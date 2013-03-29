@@ -4,7 +4,7 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  define(['views/NodeView', 'models/NodeCollection', 'models/Node'], function(NodeView, NodeCollection, Node) {
+  define(['views/NodeView', 'models/Node'], function(NodeView, Node) {
     var MapView, _ref;
 
     return MapView = (function(_super) {
@@ -13,8 +13,8 @@
       function MapView() {
         this.addNode = __bind(this.addNode, this);
         this.drawNodes = __bind(this.drawNodes, this);
+        this.getNodeModel = __bind(this.getNodeModel, this);
         this.generateNodeArray = __bind(this.generateNodeArray, this);
-        this.setMapDimensions = __bind(this.setMapDimensions, this);
         this.render = __bind(this.render, this);
         this.initialize = __bind(this.initialize, this);        _ref = MapView.__super__.constructor.apply(this, arguments);
         return _ref;
@@ -23,57 +23,53 @@
       MapView.prototype.className = 'map-canvas';
 
       MapView.prototype.initialize = function() {
-        Backbone.Events.on('node:create', this.addNode, this);
-        this.nodeCollection = new NodeCollection();
-        this.nodeCollection.url("_" + this.model.id + "-collection");
-        return this.nodeCollection.fetch();
+        return Backbone.Events.on('node:create', this.addNode);
       };
 
       MapView.prototype.render = function() {
-        this.setMapDimensions();
+        this.drawNodes(this.generateNodeArray());
         return this;
       };
 
-      MapView.prototype.setMapDimensions = function() {
-        var nodeArray;
+      MapView.prototype.generateNodeArray = function() {
+        var height, nodeArray, width, y, _fn, _i, _ref1,
+          _this = this;
 
-        this.$el.css({
-          'width': this.model.width * 32,
-          'height': this.model.height * 32
-        });
-        nodeArray = this.generateNodeArray(this.model.width, this.model.height);
-        return this.drawNodes(nodeArray);
-      };
-
-      MapView.prototype.generateNodeArray = function(width, height) {
-        var mapId, nodeArray, y, _fn, _i, _ref1;
-
+        height = this.model.get('height');
+        width = this.model.get('width');
         nodeArray = new Array(height);
-        mapId = this.model.id;
         _fn = function(y) {
-          var x, _fn1, _j, _ref2;
+          var x, _j, _ref2, _results;
 
           nodeArray[y] = new Array(width);
-          _fn1 = function(x) {
-            var node;
-
-            node = new Node({
-              x: x,
-              y: y,
-              mapId: mapId
-            });
-            nodeArray[y][x] = new NodeView({
-              model: node
-            });
-          };
+          _results = [];
           for (x = _j = 0, _ref2 = width - 1; 0 <= _ref2 ? _j <= _ref2 : _j >= _ref2; x = 0 <= _ref2 ? ++_j : --_j) {
-            _fn1(x);
+            _results.push((function(x) {
+              var node;
+
+              node = _this.getNodeModel(x, y);
+              return nodeArray[y][x] = new NodeView({
+                model: node
+              });
+            })(x));
           }
+          return _results;
         };
         for (y = _i = 0, _ref1 = height - 1; 0 <= _ref1 ? _i <= _ref1 : _i >= _ref1; y = 0 <= _ref1 ? ++_i : --_i) {
           _fn(y);
         }
         return nodeArray;
+      };
+
+      MapView.prototype.getNodeModel = function(x, y) {
+        var node;
+
+        node = this.collection.get("" + x + "-" + y);
+        return node != null ? node : new Node({
+          x: x,
+          y: y,
+          mapId: this.model.id
+        });
       };
 
       MapView.prototype.drawNodes = function(nodeArray) {
@@ -96,13 +92,11 @@
           row = nodeArray[_i];
           _fn(row);
         }
-        this.$el.append(map);
-        return this;
+        return this.$el.append(map);
       };
 
       MapView.prototype.addNode = function(node) {
-        this.nodeCollection.add(node);
-        console.log(this.nodeCollection.toJSON());
+        this.collection.add(node);
         return this;
       };
 

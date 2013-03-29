@@ -39,7 +39,8 @@ define [
 
         addMapToCollection: (map) =>
             @collection.add map
-            
+
             mapModel = @collection.last()
             mapModel.save()
-
+            
+            Backbone.history.navigate "/edit/#{map.id}", true

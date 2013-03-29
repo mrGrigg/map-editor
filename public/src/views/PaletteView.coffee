@@ -1,4 +1,8 @@
-define ['modules/Tiles', 'views/TileView', 'text!templates/palette.html'], (Tiles, TileView, template) -> 
+define [
+    'modules/Tiles'
+    'views/TileView'
+    'text!templates/palette.html'
+    ], (Tiles, TileView, template) -> 
     class PaletteView extends Backbone.View
         className: 'palette'
 
@@ -14,8 +18,8 @@ define ['modules/Tiles', 'views/TileView', 'text!templates/palette.html'], (Tile
             
             toggle = Handlebars.compile template
 
-            for name, data of Tiles
-                tileView = new TileView data: data, name: name
+            for name of Tiles
+                tileView = new TileView name: name
                 tiles.appendChild tileView.render().el
 
             @$el.html tiles.children

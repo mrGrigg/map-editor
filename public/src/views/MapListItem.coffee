@@ -20,6 +20,6 @@ define ['text!templates/mapListItem.html'], (template) ->
 
         navigate: =>
             href = @$('.edit').attr('href');
-            Backbone.history.navigate(href, true)
+            Backbone.history.navigate href, true
 
             false

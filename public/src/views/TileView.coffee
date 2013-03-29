@@ -1,4 +1,4 @@
-define ->
+define ['modules/createTileImage'], (createTileImage) ->
     class TileView extends Backbone.View
         className: 'paletteTile'
         events:
@@ -11,25 +11,15 @@ define ->
 
             @model =
                 name: @options.name
-                data: @options.data
 
             @dnd = 'application/json'
 
         render: =>
-            image = @createTileImage()
+            image = createTileImage @model.name
             @$el.append image
             @$el.attr 'draggable', true
 
             @
-
-        createTileImage: =>
-            image = document.createElement 'img'
-            image.height = 32
-            image.width = 32
-            image.src = @model.data
-            image.title = @model.name
-
-            image
 
         dragStart: (event) =>
             if event.target instanceof HTMLImageElement

@@ -16,6 +16,10 @@
         return _ref;
       }
 
+      Map.prototype.defaults = {
+        tiles: []
+      };
+
       Map.prototype.save = function() {
         var mapString;
 

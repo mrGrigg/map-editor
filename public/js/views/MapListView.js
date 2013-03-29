@@ -67,7 +67,8 @@
 
         this.collection.add(map);
         mapModel = this.collection.last();
-        return mapModel.save();
+        mapModel.save();
+        return Backbone.history.navigate("/edit/" + map.id, true);
       };
 
       return MapListView;

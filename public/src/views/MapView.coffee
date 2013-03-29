@@ -1,40 +1,46 @@
-define ['views/NodeView', 'models/NodeCollection', 'models/Node'], (NodeView, NodeCollection, Node) ->
+define [
+    'views/NodeView'
+    'models/Node'
+    ], (NodeView, Node) ->
     class MapView extends Backbone.View
         className: 'map-canvas'
         initialize: =>
-            Backbone.Events.on 'node:create', @addNode, @
-            @nodeCollection = new NodeCollection()
-            @nodeCollection.url("_#{@model.id}-collection")
-            
-            @nodeCollection.fetch()
+
+            Backbone.Events.on 'node:create', @addNode
 
         render: =>
-            @setMapDimensions()
-
+            @drawNodes @generateNodeArray()
             @
 
-        setMapDimensions: =>
-            @$el.css 'width': @model.width * 32, 'height': @model.height * 32
-            nodeArray = @generateNodeArray @model.width, @model.height
-            @drawNodes nodeArray
+        # setMapDimensions: =>
+        #     nodeArray = 
+        #     @drawNodes @generateNodeArray()
 
-        generateNodeArray: (width, height) =>
+        generateNodeArray: =>
+            height = @model.get('height')
+            width = @model.get('width')
+
+            # scrollHorizontal = width > 15
+            # scrollVertical = height > 20
+
+            #Draw the initial 640 x 480 grid
             nodeArray = new Array height
-            mapId = @model.id
-            for y in [0..height-1]
-                do (y) ->
+            for y in [0..height - 1]
+                #Todo: Is this an option to try out curry?
+                do (y) =>
                     nodeArray[y] = new Array width
 
-                    for x in [0..width-1]
-                        do (x) ->
-                            node = new Node x: x, y: y, mapId: mapId
+                    for x in [0..width - 1]
+                        do (x) =>
+                            node = @getNodeModel x, y
                             nodeArray[y][x] = new NodeView model: node
 
-                            return
-
-                    return
-
             nodeArray 
+
+        getNodeModel: (x, y) =>
+            #Get the model from the collection or generate a new node
+            node = @collection.get("#{x}-#{y}") 
+            node ? new Node x: x, y: y, mapId: @model.id
 
         drawNodes: (nodeArray) =>
             map = document.createElement 'div'
@@ -44,11 +50,8 @@ define ['views/NodeView', 'models/NodeCollection', 'models/Node'], (NodeView, No
                         do (node) ->
                             map.appendChild node.render().el
                                 
-            @$el.append(map)                          
-                    
-            @
+            @$el.append(map)
 
         addNode: (node) =>
-            @nodeCollection.add node
-            console.log @nodeCollection.toJSON()
+            @collection.add node
             @

@@ -4,7 +4,7 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  define(['text!templates/mapEditor.html', 'views/PaletteView', 'views/MapView'], function(template, PaletteView, MapView) {
+  define(['text!templates/mapEditor.html', 'text!templates/mapCanvasWrapper.html', 'views/PaletteView', 'views/MapView', 'models/NodeCollection', 'models/Map'], function(EditorTemplate, MapCanvasTemplate, PaletteView, MapView, NodeCollection, Map) {
     var MapEditor, _ref;
 
     return MapEditor = (function(_super) {
@@ -20,22 +20,28 @@
 
       MapEditor.prototype.events = {
         'click .cancel-changes': 'cancelChanges',
-        'click .save-changes': 'saveChanges'
+        'click .save-changes': 'saveChanges',
+        'click .back': 'cancelChanges'
       };
 
-      MapEditor.prototype.initialize = function() {};
+      MapEditor.prototype.initialize = function() {
+        this.model = new Map(this.model);
+        return this.nodeCollection = new NodeCollection(this.model.get('tiles'));
+      };
 
       MapEditor.prototype.render = function() {
-        var editorTemplate, mapView, paletteView;
+        var editorTemplate, mapView, mapWrapper, paletteView;
 
-        editorTemplate = Handlebars.compile(template);
-        this.$el.html(editorTemplate(this.model));
+        editorTemplate = Handlebars.compile(EditorTemplate);
+        mapWrapper = Handlebars.compile(MapCanvasTemplate);
+        this.$el.html(editorTemplate(this.model.toJSON()));
         paletteView = new PaletteView;
         this.$el.append(paletteView.render().el);
         mapView = new MapView({
-          model: this.model
+          model: this.model,
+          collection: this.nodeCollection
         });
-        this.$el.append($('<div class="map-canvas-wrapper"></div>'));
+        this.$el.append(mapWrapper);
         this.$('.map-canvas-wrapper').append(mapView.render().el);
         return this;
       };
@@ -45,7 +51,8 @@
       };
 
       MapEditor.prototype.saveChanges = function() {
-        return console.log('saving');
+        this.model.set('tiles', this.nodeCollection.toJSON());
+        return this.model.save();
       };
 
       return MapEditor;

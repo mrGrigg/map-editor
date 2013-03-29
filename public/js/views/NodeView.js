@@ -4,7 +4,7 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  define(function() {
+  define(['modules/Tiles', 'modules/createTileImage'], function(Tiles, createTileImage) {
     var NodeView, _ref;
 
     return NodeView = (function(_super) {
@@ -13,7 +13,6 @@
       function NodeView() {
         this.placeTile = __bind(this.placeTile, this);
         this.tileSelected = __bind(this.tileSelected, this);
-        this.createTileImage = __bind(this.createTileImage, this);
         this.handleDrop = __bind(this.handleDrop, this);
         this.dragOver = __bind(this.dragOver, this);
         this.dragEnter = __bind(this.dragEnter, this);
@@ -29,17 +28,23 @@
       };
 
       NodeView.prototype.initialize = function() {
-        Backbone.Events.on('tile:selected', this.tileSelected, this);
+        Backbone.Events.on('tile:selected', this.tileSelected);
         return this.dnd = 'application/json';
       };
 
       NodeView.prototype.render = function() {
-        var coordinateClass;
+        var coordinateClass, image, tileName;
 
         coordinateClass = "coords[" + (this.model.get('x')) + "," + (this.model.get('y')) + "]";
         this.$el.addClass(coordinateClass);
         this.$el.attr('title', "" + (this.model.get('x')) + ", " + (this.model.get('y')));
         this.$el.attr('dropzone', 'copy application/json');
+        tileName = this.model.get('name');
+        if (tileName != null) {
+          image = createTileImage(tileName);
+          this.$el.html(image);
+          this.$el.removeClass('empty');
+        }
         return this;
       };
 
@@ -63,17 +68,6 @@
         return this.placeTile();
       };
 
-      NodeView.prototype.createTileImage = function() {
-        var image;
-
-        image = document.createElement('img');
-        image.height = 32;
-        image.width = 32;
-        image.src = this.model.get('data');
-        image.title = this.model.get('name');
-        return image;
-      };
-
       NodeView.prototype.tileSelected = function(tile) {
         return this.selectedTile = tile;
       };
@@ -82,7 +76,7 @@
         var image;
 
         this.model.set(this.selectedTile);
-        image = this.createTileImage();
+        image = createTileImage(this.model.get('name'));
         this.$el.html(image);
         this.$el.removeClass('empty');
         return Backbone.Events.trigger('node:create', this.model);

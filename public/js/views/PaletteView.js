@@ -30,14 +30,12 @@
       };
 
       PaletteView.prototype.render = function() {
-        var data, name, tileView, tiles, toggle;
+        var name, tileView, tiles, toggle;
 
         tiles = document.createElement('div');
         toggle = Handlebars.compile(template);
         for (name in Tiles) {
-          data = Tiles[name];
           tileView = new TileView({
-            data: data,
             name: name
           });
           tiles.appendChild(tileView.render().el);

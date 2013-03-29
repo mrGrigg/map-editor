@@ -4,7 +4,7 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  define(function() {
+  define(['modules/createTileImage'], function(createTileImage) {
     var TileView, _ref;
 
     return TileView = (function(_super) {
@@ -13,7 +13,6 @@
       function TileView() {
         this.selectTile = __bind(this.selectTile, this);
         this.dragStart = __bind(this.dragStart, this);
-        this.createTileImage = __bind(this.createTileImage, this);
         this.render = __bind(this.render, this);
         this.initialize = __bind(this.initialize, this);        _ref = TileView.__super__.constructor.apply(this, arguments);
         return _ref;
@@ -30,8 +29,7 @@
         jQuery.event.props.push('dataTransfer');
         this.$el.attr('id', this.options.name);
         this.model = {
-          name: this.options.name,
-          data: this.options.data
+          name: this.options.name
         };
         return this.dnd = 'application/json';
       };
@@ -39,21 +37,10 @@
       TileView.prototype.render = function() {
         var image;
 
-        image = this.createTileImage();
+        image = createTileImage(this.model.name);
         this.$el.append(image);
         this.$el.attr('draggable', true);
         return this;
-      };
-
-      TileView.prototype.createTileImage = function() {
-        var image;
-
-        image = document.createElement('img');
-        image.height = 32;
-        image.width = 32;
-        image.src = this.model.data;
-        image.title = this.model.name;
-        return image;
       };
 
       TileView.prototype.dragStart = function(event) {

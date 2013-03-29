@@ -1,11 +1,11 @@
-define ->
+define ['modules/Tiles', 'modules/createTileImage'], (Tiles, createTileImage) ->
     class NodeView extends Backbone.View
         className: 'map-node empty'
         events:
             'click': 'placeTile'
 
         initialize: =>
-            Backbone.Events.on 'tile:selected', @tileSelected, @
+            Backbone.Events.on 'tile:selected', @tileSelected
 
             @dnd = 'application/json'
 
@@ -14,6 +14,12 @@ define ->
             @$el.addClass coordinateClass
             @$el.attr 'title', "#{@model.get('x')}, #{@model.get('y')}"
             @$el.attr 'dropzone', 'copy application/json'
+
+            tileName = @model.get 'name'
+            if tileName?
+                image = createTileImage tileName
+                @$el.html image
+                @$el.removeClass 'empty'
 
             @
 
@@ -36,22 +42,13 @@ define ->
 
             @placeTile()
 
-        createTileImage: =>
-            image = document.createElement 'img'
-            image.height = 32
-            image.width = 32
-            image.src = @model.get 'data'
-            image.title = @model.get 'name'
-
-            image
-
         tileSelected: (tile) =>
             @selectedTile = tile
 
         placeTile: =>
             @model.set @selectedTile
 
-            image = @createTileImage()
+            image = createTileImage @model.get 'name'
             @$el.html image
             @$el.removeClass 'empty'
 

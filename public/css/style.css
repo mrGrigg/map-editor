@@ -101,15 +101,47 @@ button {
 }
 
 .map-canvas-wrapper {
-    width:700px;
-    height:500px;
-    padding:10px;
+    width:655px;
+    height:495px;
     margin:25px auto;
+    overflow:hidden;
     position:relative;
 }
 
 .map-canvas {
-    border:solid 1px #888;
+    position:absolute;
+    top:0;
+    left:0;
+    width:640px;
+    height:480px;
+    overflow:hidden;
+}
+
+.scrollbar {
+    position:absolute;
+    background:#777;
+    opacity:.5;
+}
+
+.scrollbar.horizontal {
+    bottom:0;
+    left:0;
+    height:15px;
+    width:640px;
+}
+
+.scrollbar.vertical {
+    right:0;
+    top:0;
+    width:15px;
+    height:480px;
+}
+
+.scroller {
+    width:12px;
+    height:12px;
+    border:solid 1px #fff;
+    cursor:pointer;
 }
 
 .map-node {
