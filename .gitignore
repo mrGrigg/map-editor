@@ -1,2 +1,4 @@
 node_modules
-public/js
+public/js/models
+public/js/modules
+public/js/views
