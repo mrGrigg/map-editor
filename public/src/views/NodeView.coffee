@@ -10,8 +10,6 @@ define ['modules/Tiles', 'modules/createTileImage'], (Tiles, createTileImage) ->
             @dnd = 'application/json'
 
         render: =>
-            coordinateClass = "coords[#{@model.get('x')},#{@model.get('y')}]"
-            @$el.addClass coordinateClass
             @$el.attr 'title', "#{@model.get('x')}, #{@model.get('y')}"
             @$el.attr 'dropzone', 'copy application/json'
 
@@ -20,6 +18,8 @@ define ['modules/Tiles', 'modules/createTileImage'], (Tiles, createTileImage) ->
                 image = createTileImage tileName
                 @$el.html image
                 @$el.removeClass 'empty'
+            else
+                @$el.html "#{@model.get('x')},#{@model.get('y')}"
 
             @
 

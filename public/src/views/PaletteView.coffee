@@ -23,7 +23,7 @@ define [
                 tiles.appendChild tileView.render().el
 
             @$el.html tiles.children
-            @$el.append toggle
+            #@$el.append toggle
 
             @
 

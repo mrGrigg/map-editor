@@ -33,10 +33,8 @@
       };
 
       NodeView.prototype.render = function() {
-        var coordinateClass, image, tileName;
+        var image, tileName;
 
-        coordinateClass = "coords[" + (this.model.get('x')) + "," + (this.model.get('y')) + "]";
-        this.$el.addClass(coordinateClass);
         this.$el.attr('title', "" + (this.model.get('x')) + ", " + (this.model.get('y')));
         this.$el.attr('dropzone', 'copy application/json');
         tileName = this.model.get('name');
@@ -44,6 +42,8 @@
           image = createTileImage(tileName);
           this.$el.html(image);
           this.$el.removeClass('empty');
+        } else {
+          this.$el.html("" + (this.model.get('x')) + "," + (this.model.get('y')));
         }
         return this;
       };

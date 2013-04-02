@@ -41,7 +41,6 @@
           tiles.appendChild(tileView.render().el);
         }
         this.$el.html(tiles.children);
-        this.$el.append(toggle);
         return this;
       };
 
