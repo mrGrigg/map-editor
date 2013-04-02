@@ -7,8 +7,7 @@ var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
-  , path = require('path')
-  , connect = require('connect');
+  , path = require('path');
 
 var app = express();
 
@@ -16,7 +15,6 @@ app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
-  app.use(connect.compress());
   app.use(express.favicon('public/images/favicon.ico'));
   app.use(express.logger('dev'));
   app.use(express.bodyParser());

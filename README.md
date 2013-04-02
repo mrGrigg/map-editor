@@ -5,8 +5,10 @@ Tile based map editor using backbone.js and coffee-script.
 
 Currently everything's saved in local storage. I also don't think you'll have much luck running this outside of Chrome.
 
-Mostly for my reference, this is the coffee command to compile and monitor the project:  
-`coffee -o public/js/ -cw public/src/`
+Give yourself an `npm install` to make sure you have all the dependencies.
+
+Mostly for my reference, this is the coffee command to compile the project:  
+`coffee -o public/js/ -c public/src/`
 
 I also recommend using nodemon during development:  
 `nodemon app.js`
