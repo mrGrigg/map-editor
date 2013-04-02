@@ -160,16 +160,18 @@ button {
     width:30px;
     height:30px;   
     border:dotted 1px #ccc;
+    font-size:.75em;
+    line-height: 2.5em;
 }
 /****************/
 /* Utilities */
 /****************/
 
-.left {
+.float-left {
     float:left;
 }
 
-.right {
+.float-right {
     float:right;
 }
 

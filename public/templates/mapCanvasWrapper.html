@@ -1,8 +1,16 @@
 <div class="map-canvas-wrapper">
+    {{#if horizontal}}
     <div class="scrollbar horizontal">
         <div class="scroller"></div>
     </div>
+    {{/if}}
+    {{#if vertical}}
     <div class="scrollbar vertical">
         <div class="scroller"></div>
     </div>
+    {{/if}}
 </div>
+<a class="append up" href="">Up</a>
+<a class="append right" href="">Right</a>
+<a class="append down" href="">Down</a>
+<a class="append left" href="">Left</a>
