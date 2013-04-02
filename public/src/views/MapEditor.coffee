@@ -18,8 +18,8 @@ define [
 
         render: =>
             scroll =
-                horizontal: (parseInt @model.get('width'), 10) > 15
-                vertical: (parseInt @model.get('height'), 10) > 20
+                horizontal: @model.get('width') > 15
+                vertical: @model.get('height') > 20
 
             editorTemplate = Handlebars.compile EditorTemplate
             mapWrapper = Handlebars.compile MapCanvasTemplate

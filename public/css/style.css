@@ -101,19 +101,27 @@ button {
 }
 
 .map-canvas-wrapper {
-    width:655px;
-    height:495px;
+    width:648px;
+    height:488px;
     margin:25px auto;
     overflow:hidden;
     position:relative;
+    border:solid 1px black;
 }
 
 .map-canvas {
     position:absolute;
     top:0;
     left:0;
-    width:640px;
-    height:480px;
+    width:648px;
+    height:488px;
+    overflow:hidden;
+}
+
+.map-container {
+    position:absolute;
+    top:0;
+    left:0;
     overflow:hidden;
 }
 
@@ -149,7 +157,6 @@ button {
     height:32px;
     float:left;
     position:relative;
-    cursor:pointer;
 }
 
 .map-node:hover {
@@ -185,6 +192,10 @@ button {
 
 .no-bullet {
     list-style:none;
+}
+
+.move {
+    cursor:move;
 }
 
 .overlay {

@@ -20,8 +20,8 @@ define ['text!templates/newMapModal.html', 'models/Map'], (template, Map) ->
             #Create the new map with the form values
             map =
                 'name': @$('.map-name').val()
-                'width': @$('.map-width').val()
-                'height': @$('.map-height').val()
+                'width': parseInt @$('.map-width').val(), 10
+                'height': parseInt @$('.map-height').val(), 10
                 'id': @guid()
 
             Backbone.Events.trigger 'map:create', map
