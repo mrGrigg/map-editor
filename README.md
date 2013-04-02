@@ -3,7 +3,7 @@ Map Editor
 
 Tile based map editor using backbone.js and coffee-script.
 
-Right now everything's saved in local storage. I also don't think you'll have much luck running this outside of Chrome right now.
+Currently everything's saved in local storage. I also don't think you'll have much luck running this outside of Chrome right now.
 
 Mostly for my reference, this is the coffee command to compile and monitor the project:  
 `coffee -o public/js/ -cw public/src/`
