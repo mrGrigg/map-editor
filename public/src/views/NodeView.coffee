@@ -18,8 +18,6 @@ define ['modules/Tiles', 'modules/createTileImage'], (Tiles, createTileImage) ->
                 image = createTileImage tileName
                 @$el.html image
                 @$el.removeClass 'empty'
-            else
-                @$el.html "#{@model.get('x')},#{@model.get('y')}"
 
             @
 

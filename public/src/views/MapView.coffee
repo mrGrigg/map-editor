@@ -1,7 +1,8 @@
 define [
     'views/NodeView'
     'models/Node'
-    ], (NodeView, Node) ->
+    'modules/createTileImage'
+    ], (NodeView, Node, createTileImage) ->
     class MapView extends Backbone.View
         className: 'map-canvas'
 
@@ -24,7 +25,6 @@ define [
 
             mapHeight = if @height > 15 then 15 else @height
             mapWidth = if @width > 20 then 20 else @width
-
             
             mapNodes = @drawNodes @generateNodeArray()
 
