@@ -23,11 +23,28 @@
       MapView.prototype.className = 'map-canvas';
 
       MapView.prototype.initialize = function() {
-        return Backbone.Events.on('node:create', this.addNode);
+        Backbone.Events.on('node:create', this.addNode);
+        this.height = parseInt(this.model.get('height'), 10);
+        return this.width = parseInt(this.model.get('width'), 10);
       };
 
       MapView.prototype.render = function() {
-        this.drawNodes(this.generateNodeArray());
+        var mapHeight, mapNodes, mapWidth;
+
+        if (this.height < 20) {
+          this.$el.css({
+            'height': this.height * 32
+          });
+        }
+        if (this.width < 15) {
+          this.$el.css({
+            'width': this.width * 32
+          });
+        }
+        mapHeight = this.height > 20 ? 20 : this.height;
+        mapWidth = this.width > 15 ? 15 : this.width;
+        mapNodes = this.drawNodes(this.generateNodeArray());
+        this.$el.append(mapNodes);
         return this;
       };
 
@@ -92,7 +109,7 @@
           row = nodeArray[_i];
           _fn(row);
         }
-        return this.$el.append(map);
+        return map.children;
       };
 
       MapView.prototype.addNode = function(node) {

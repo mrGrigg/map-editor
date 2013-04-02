@@ -30,8 +30,12 @@
       };
 
       MapEditor.prototype.render = function() {
-        var editorTemplate, mapView, mapWrapper, paletteView;
+        var editorTemplate, mapView, mapWrapper, paletteView, scroll;
 
+        scroll = {
+          horizontal: (parseInt(this.model.get('width'), 10)) > 15,
+          vertical: (parseInt(this.model.get('height'), 10)) > 20
+        };
         editorTemplate = Handlebars.compile(EditorTemplate);
         mapWrapper = Handlebars.compile(MapCanvasTemplate);
         this.$el.html(editorTemplate(this.model.toJSON()));
@@ -41,7 +45,7 @@
           model: this.model,
           collection: this.nodeCollection
         });
-        this.$el.append(mapWrapper);
+        this.$el.append(mapWrapper(scroll));
         this.$('.map-canvas-wrapper').append(mapView.render().el);
         return this;
       };

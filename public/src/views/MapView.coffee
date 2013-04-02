@@ -5,16 +5,24 @@ define [
     class MapView extends Backbone.View
         className: 'map-canvas'
         initialize: =>
-
             Backbone.Events.on 'node:create', @addNode
 
-        render: =>
-            @drawNodes @generateNodeArray()
-            @
+            @height = parseInt @model.get('height'), 10
+            @width = parseInt @model.get('width'), 10
 
-        # setMapDimensions: =>
-        #     nodeArray = 
-        #     @drawNodes @generateNodeArray()
+        render: =>
+            if @height < 20
+                @$el.css 'height': @height * 32
+
+            if @width < 15
+                @$el.css 'width': @width * 32
+
+            mapHeight = if @height > 20 then 20 else @height
+            mapWidth = if @width > 15 then 15 else @width            
+            
+            mapNodes = @drawNodes @generateNodeArray()
+            @$el.append mapNodes
+            @
 
         generateNodeArray: =>
             height = @model.get('height')
@@ -42,6 +50,7 @@ define [
             node = @collection.get("#{x}-#{y}") 
             node ? new Node x: x, y: y, mapId: @model.id
 
+        #Convert the node collection into node views
         drawNodes: (nodeArray) =>
             map = document.createElement 'div'
             for row in nodeArray
@@ -50,7 +59,7 @@ define [
                         do (node) ->
                             map.appendChild node.render().el
                                 
-            @$el.append(map)
+            map.children
 
         addNode: (node) =>
             @collection.add node

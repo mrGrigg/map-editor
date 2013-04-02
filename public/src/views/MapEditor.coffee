@@ -13,10 +13,14 @@ define [
             'click .back': 'cancelChanges'
 
         initialize: =>
-            @model = new Map(@model)
+            @model = new Map @model
             @nodeCollection = new NodeCollection(@model.get('tiles'))
 
         render: =>
+            scroll =
+                horizontal: (parseInt @model.get('width'), 10) > 15
+                vertical: (parseInt @model.get('height'), 10) > 20
+
             editorTemplate = Handlebars.compile EditorTemplate
             mapWrapper = Handlebars.compile MapCanvasTemplate
 
@@ -26,7 +30,7 @@ define [
             @$el.append paletteView.render().el
 
             mapView = new MapView model: @model, collection: @nodeCollection
-            @$el.append mapWrapper
+            @$el.append mapWrapper scroll
             @$('.map-canvas-wrapper').append mapView.render().el
             @
 
